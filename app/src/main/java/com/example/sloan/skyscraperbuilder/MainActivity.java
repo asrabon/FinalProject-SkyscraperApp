@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         enterNameContainer = (LinearLayout)findViewById(R.id.enterNameContainer);
         enterNameContainer.setVisibility(View.INVISIBLE);
-        enterNameContainer.getLayoutParams().width = deviceWidth/3;
-        enterNameContainer.getLayoutParams().height = deviceHeight/3;
+        enterNameContainer.getLayoutParams().width = deviceWidth/2;
+        enterNameContainer.getLayoutParams().height = deviceHeight/4;
         enterNameEditText = (EditText)findViewById(R.id.enterNameEditText);
         submitButton = (Button)findViewById(R.id.submitButton);
         submitButton.setOnClickListener(this);
@@ -149,6 +149,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static void addToScore() {
         score++;
+        if(score % 5 == 0 && score > 0) {
+            AnimationView.currentVelocity = AnimationView.currentVelocity + 5;
+        }
         scoreTextView.setText("Score: " + score);
     }
 
@@ -164,26 +167,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          **/
         replayButton.setVisibility(View.VISIBLE);
         gameOverContainer.setVisibility(View.VISIBLE);
+        saveScoreButton.setVisibility(View.VISIBLE);
+        /**
         if(saveScoreVisible){
             saveScoreButton.setVisibility(View.VISIBLE);
         }else{
-            saveScoreButton.setVisibility(View.INVISIBLE);
+            //saveScoreButton.setVisibility(View.INVISIBLE);
+            saveScoreButton.setClickable(false);
         }
+         **/
         goScoreButton.setVisibility(View.VISIBLE);
         //write score to file if the score is high enough
 
-
-    }
-
-    /* Called by AnimationView restartGame() method when users click the button "restart"
-    ** setup Visibility
-    */
-    public static void restartGame(){
-        saveScoreVisible = true;
-        gameOverContainer.setVisibility(View.INVISIBLE);
-        goScoreButton.setVisibility(View.INVISIBLE);
-        replayButton.setVisibility(View.INVISIBLE);
-        saveScoreButton.setVisibility(View.INVISIBLE);
 
     }
 
@@ -198,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             gameOverContainer.setVisibility(View.INVISIBLE);
             goScoreButton.setVisibility(View.INVISIBLE);
             replayButton.setVisibility(View.INVISIBLE);
-            saveScoreButton.setVisibility(View.INVISIBLE);
+            saveScoreButton.setClickable(true);
             AnimationView.restartGame();
         } else if(viewID == saveScoreButton.getId()) {
             gameOverContainer.setClickable(false);
@@ -213,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //JUNKAI CODE
             readFromFile(scoreArrayList,context);
             writeScoreToFile(scoreArrayList,score,context,saveScoreName);
-            saveScoreButton.setVisibility(v.INVISIBLE);
+            saveScoreButton.setClickable(false);
             saveScoreVisible=false;
         }
     }

@@ -11,11 +11,14 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.junkai.finalproject.BuildConfig;
 import com.example.junkai.finalproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * AnimationView - offers a graphical view of a simple animated app
@@ -33,6 +36,8 @@ public class AnimationView extends View {
 
     private AnimationThread animationThread;
 
+    private Random rand = new Random();
+
     private static List<Sprite> spriteList;
 
     private int canvasWidth;
@@ -40,8 +45,10 @@ public class AnimationView extends View {
     private int leftBound;
     private int rightBound;
 
-    Bitmap level = BitmapFactory.decodeResource(getResources(), R.drawable.level);
-    Paint buildingPaint = new Paint();
+    public static int currentVelocity = 15;
+
+    Bitmap level = BitmapFactory.decodeResource(getResources(), R.drawable.building_level);
+    Bitmap initialLevel = BitmapFactory.decodeResource(getResources(), R.drawable.building_level_with_door);
 
     /**
      * Constructor that initializes this with two BallSprites and starts
@@ -123,7 +130,8 @@ public class AnimationView extends View {
                 MainActivity.gameOver();
             } else {
                 MainActivity.addToScore();
-                Sprite newBuildingSprite = new BuildingSprite(canvas.getWidth() / 2, 200, 15, 0, level);
+                int randomX = rand.nextInt((int)(canvasWidth-BuildingSprite.DEFAULT_WIDTH));
+                Sprite newBuildingSprite = new BuildingSprite(randomX, 200, currentVelocity, 0, level);
                 newBuildingSprite.setSize(BuildingSprite.DEFAULT_WIDTH, BuildingSprite.DEFAULT_HEIGHT);
                 spriteList.add(newBuildingSprite);
             }
@@ -172,10 +180,12 @@ public class AnimationView extends View {
 
     //ADDED THIS
     private void setupGame() {
-        BuildingSprite initialSprite = new BuildingSprite(canvasWidth/2, canvasHeight-BuildingSprite.DEFAULT_HEIGHT, 0, 0, level);
+        currentVelocity = 15;
+        BuildingSprite initialSprite = new BuildingSprite(canvasWidth/2 - BuildingSprite.DEFAULT_WIDTH/2, canvasHeight-BuildingSprite.DEFAULT_HEIGHT, 0, 0, initialLevel);
         initialSprite.setSize(BuildingSprite.DEFAULT_WIDTH, BuildingSprite.DEFAULT_HEIGHT);
         spriteList.add(initialSprite);
-        BuildingSprite firstMovingSprite = new BuildingSprite(canvasWidth/2, 200, 15, 0, level);
+        int randomX = rand.nextInt((int)(canvasWidth-BuildingSprite.DEFAULT_WIDTH));
+        BuildingSprite firstMovingSprite = new BuildingSprite(randomX, 200, currentVelocity, 0, level);
         firstMovingSprite.setSize(BuildingSprite.DEFAULT_WIDTH, BuildingSprite.DEFAULT_HEIGHT);
         spriteList.add(firstMovingSprite);
     }
@@ -191,7 +201,7 @@ public class AnimationView extends View {
      */
     private boolean atBottom(Sprite sprite, Canvas canvas) {
         RectF currentLocation = sprite.getRect();
-        if(currentLocation.bottom >= (canvas.getHeight()-((spriteList.size()-1)*BuildingSprite.DEFAULT_HEIGHT) - (BuildingSprite.DEFAULT_HEIGHT/18) )) {
+        if(currentLocation.bottom >= (canvas.getHeight()-((spriteList.size()-1)*BuildingSprite.DEFAULT_HEIGHT) )) {
             return true;
         }
         return false;

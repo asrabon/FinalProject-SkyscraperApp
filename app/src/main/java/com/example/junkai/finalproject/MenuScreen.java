@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,22 +39,25 @@ public class MenuScreen extends AppCompatActivity {
     private TextView nameOfGameTextView;
     private Button gameStartButton,scoreButton;
     private MediaPlayer mediaPlayer;
+    private FrameLayout backgroundFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_screen);
 
-        //set the background picture
-        //Drawable drBack = getResources().getDrawable(R.drawable.empire);
-        //Bitmap bitmapBack = ((BitmapDrawable) drBack).getBitmap();
+        backgroundFrame = (FrameLayout)findViewById(R.id.backgroundFrame);
+
+        String fontPath = "fonts/building.ttf";
+        Typeface buildingTypeface = Typeface.createFromAsset(getAssets(), fontPath);
 
         Bitmap bitmapBack = BitmapFactory.decodeResource(getResources(), R.drawable.empire);
         int heightOfScreen = Resources.getSystem().getDisplayMetrics().heightPixels;
         int widthOfScreen = Resources.getSystem().getDisplayMetrics().widthPixels;
         Drawable newDrBack = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapBack,widthOfScreen,heightOfScreen,true));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().setBackground(newDrBack);
+            backgroundFrame.setBackground(newDrBack);
+            //getWindow().getDecorView().setBackground(newDrBack);
         }
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -113,6 +118,10 @@ public class MenuScreen extends AppCompatActivity {
 
         });
 
+        //set fonts up for button and text
+        nameOfGameTextView.setTypeface(buildingTypeface);
+        gameStartButton.setTypeface(buildingTypeface);
+        scoreButton.setTypeface(buildingTypeface);
     }
 
     @Override
