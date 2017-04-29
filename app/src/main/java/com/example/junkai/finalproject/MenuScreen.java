@@ -26,11 +26,14 @@ import android.widget.Toast;
 
 import com.example.sloan.skyscraperbuilder.MainActivity;
 
-/**
- * @author Junkai Xing
- * @Version 1
- * @Date 2017/4/8
- * @Class CSCI343
+/***************
+ *
+ * @Name:Junkai Xing
+ * @Final Project
+ * @Email:jxing@g.coastal.edu
+ * @Date: 4/29/2017
+ * @Course: CSCI 343
+ * @Professor: Clint E. Fuchs
  */
 
 public class MenuScreen extends AppCompatActivity {
