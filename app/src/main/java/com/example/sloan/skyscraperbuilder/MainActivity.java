@@ -1,24 +1,17 @@
 package com.example.sloan.skyscraperbuilder;
 
-
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.junkai.finalproject.HighestScore;
@@ -30,11 +23,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
+
+/**
+ * MainActivity - Class that will provide interaction with all of the components on the screen that
+ * will be used to play the skyscraper builder game such as the game over screen, submit score screen,
+ * and score text
+ *
+ * @author Anthony Rabon
+ * @date 4/30/2017
+ * @email asrabon@g.coastal.edu
+ * @course CSCI 343
+ */
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,13 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static Button submitButton;
     public static EditText enterNameEditText;
 
-    private RelativeLayout mainContainer;
     public static int score;
-    public boolean fileNotFound;
     public static ArrayList<String> scoreArrayList;
     public static final String TxtName = "score.txt";
     public static Context context;
-    private static boolean saveScoreVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,20 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         saveScoreButton = (Button)findViewById(R.id.SaveScoreButton);
         saveScoreButton.setVisibility(View.INVISIBLE);
         saveScoreButton.setTypeface(arcadeTypeface);
-        saveScoreVisible = true;
         saveScoreButton.setOnClickListener(this);
-        /**
-        saveScoreButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                readFromFile(scoreArrayList,context);
-                writeScoreToFile(scoreArrayList,score,context);
-                saveScoreButton.setVisibility(v.INVISIBLE);
-                saveScoreVisible=false;
-            }
-        });
-    **/
     }
 
     public static void addToScore() {
@@ -158,30 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public static void gameOver() {
-        /**
-         gameOverTextView.setText("Game Over!");
-         replayButton.setVisibility(View.VISIBLE);
-         goScoreButton.setVisibility(View.VISIBLE);
-
-         //Error: will keep use this method when gameover
-         //reason: keep drawing thread (keep refreshing activity)
-         //When the user clicks the saveScore button, the button will disappear to avoid saving score multiple times
-         **/
         replayButton.setVisibility(View.VISIBLE);
         gameOverContainer.setVisibility(View.VISIBLE);
         saveScoreButton.setVisibility(View.VISIBLE);
-        /**
-        if(saveScoreVisible){
-            saveScoreButton.setVisibility(View.VISIBLE);
-        }else{
-            //saveScoreButton.setVisibility(View.INVISIBLE);
-            saveScoreButton.setClickable(false);
-        }
-         **/
         goScoreButton.setVisibility(View.VISIBLE);
-        //write score to file if the score is high enough
-
-
     }
 
     @Override
@@ -205,13 +171,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             enterNameContainer.setVisibility(View.INVISIBLE);
             gameOverContainer.setClickable(true);
             String saveScoreName = enterNameEditText.getText().toString();
-
-            //TODO add in capability to write the persons name to the score file with that score
-            //JUNKAI CODE
             readFromFile(scoreArrayList,context);
             writeScoreToFile(scoreArrayList,score,context,saveScoreName);
             saveScoreButton.setClickable(false);
-            saveScoreVisible=false;
         }
     }
 

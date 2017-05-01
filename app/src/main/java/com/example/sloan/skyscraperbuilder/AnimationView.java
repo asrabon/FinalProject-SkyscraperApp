@@ -3,17 +3,12 @@ package com.example.sloan.skyscraperbuilder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.junkai.finalproject.BuildConfig;
 import com.example.junkai.finalproject.R;
 
 import java.util.ArrayList;
@@ -21,13 +16,14 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * AnimationView - offers a graphical view of a simple animated app
- *     with BallSprites that move around and bounce of the edges of the screen.
+ * AnimationView - AnimationView class that will provide the graphical interface for playing the
+ * skyscraper builder game and the logic for the game. Will keep an arraylist of the building level
+ * sprites and will check after each building level is dropped if the game is over or the user can
+ * continue playing.
  *
- * Created by clintf on 3/29/17.
- * @author Clint Fuchs
- * @date 3/29/2017
- * @email clintf@coastal.edu
+ * @author Anthony Rabon
+ * @date 4/30/2017
+ * @email asrabon@g.coastal.edu
  * @course CSCI 343
  */
 public class AnimationView extends View {
@@ -41,7 +37,7 @@ public class AnimationView extends View {
     private static List<Sprite> spriteList;
 
     private int canvasWidth;
-    private int canvasHeight;//ADDED THIS
+    private int canvasHeight;
     private int leftBound;
     private int rightBound;
 
@@ -51,9 +47,9 @@ public class AnimationView extends View {
     Bitmap initialLevel = BitmapFactory.decodeResource(getResources(), R.drawable.building_level_with_door);
 
     /**
-     * Constructor that initializes this with two BallSprites and starts
-     *     and animation thread that moves the BallSprites around the
-     *     screen.
+     * Constructor that initializes this with an initial building level at the bottom
+     * and a building level moving at the top of the screen then start the animation thread
+     * that moves the moves and drops the building levels
      *
      * @param context not null
      * @param attributeSet not null
@@ -67,17 +63,6 @@ public class AnimationView extends View {
     private void initAnimationView(){
 
         this.spriteList = new ArrayList<Sprite>();
-        //WHAT IS COMMENTED OUT YOU CAN GET RID OF
-/**
- Sprite initialBuildingSprite = new BuildingSprite(750, 1000, 0, 0);
- initialBuildingSprite.setSize(BuildingSprite.DEFAULT_WIDTH, BuildingSprite.DEFAULT_HEIGHT);
- this.spriteList.add(initialBuildingSprite);
- Sprite buildingSprite = new BuildingSprite(500, 200, 15, 0);
- buildingSprite.setSize(BuildingSprite.DEFAULT_WIDTH, BuildingSprite.DEFAULT_HEIGHT);
-
- this.spriteList.add(buildingSprite);
- **/
-
         this.animationThread = new AnimationThread(this, AnimationThread.DEFAULT_FPS);
         this.animationThread.start();
 
@@ -85,10 +70,11 @@ public class AnimationView extends View {
 
 
     /**
-     * draws the BallSprites on this View and
-     *    updates their position.
+     * draws the building levels on this view, updates their position, and check if the game is over
+     * or the game can continue to be played depending on the placement of the last building level,
+     * and add new building levels to the view when needed.
      *
-     * @param canvas
+     * @param canvas Entire drawing space of the screen that the game is on
      */
     @Override
     public void onDraw(Canvas canvas){
@@ -145,7 +131,7 @@ public class AnimationView extends View {
     /**
      * draws all of Sprites in theList to this View.
      *
-     * @param canvas should not be null
+     * @param canvas should not be null and is the entire canvas the game is on
      */
     private void drawAllSprites(Canvas canvas){
         for(int index=0; index<this.spriteList.size(); index++){
@@ -168,6 +154,7 @@ public class AnimationView extends View {
     /**
      * recocgnizes a user's touch or tapping of the screen and starts
      * to drop the building block straight down
+     *
      * @param motionEvent should not be null
      * @return the parent's onTouchEvent
      */
@@ -178,7 +165,11 @@ public class AnimationView extends View {
         return super.onTouchEvent(motionEvent);
     }
 
-    //ADDED THIS
+    /**
+     * Method that will setup up the game if it hasn't been setup already by creating a building level
+     * that will sit at the bottom of the screen and create a building level at the top of the screen
+     * that will move side to side
+     */
     private void setupGame() {
         currentVelocity = 15;
         BuildingSprite initialSprite = new BuildingSprite(canvasWidth/2 - BuildingSprite.DEFAULT_WIDTH/2, canvasHeight-BuildingSprite.DEFAULT_HEIGHT, 0, 0, initialLevel);
