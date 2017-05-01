@@ -1,5 +1,13 @@
 package com.example.junkai.finalproject;
-
+/***************
+ *
+ * @Name:Junkai Xing
+ * @Final Project
+ * @Email:jxing@g.coastal.edu
+ * @Date: 4/29/2017
+ * @Course: CSCI 343
+ * @Professor: Clint E. Fuchs
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;

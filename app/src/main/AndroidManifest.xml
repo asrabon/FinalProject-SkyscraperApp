@@ -10,21 +10,24 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MenuScreen">
+        <activity android:name=".MenuScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.sloan.skyscraperbuilder.MainActivity">
+        <activity android:name="com.example.sloan.skyscraperbuilder.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HighestScore"></activity>
+        <activity android:name=".HighestScore"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
